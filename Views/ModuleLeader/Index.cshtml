@@ -1,0 +1,41 @@
+@model IEnumerable<BlindMatchPAS.Models.Match>
+
+@{
+    ViewData["Title"] = "Module Leader Dashboard";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4 p-3 bg-light rounded shadow-sm">
+        <h2 class="text-primary mb-0">Module Leader Dashboard</h2>
+        <span class="badge bg-dark">Full System Oversight</span>
+    </div>
+    
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <table class="table table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Project Proposal</th>
+                        <th>Student</th>
+                        <th>Supervisor</th>
+                        <th>Match Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model) {
+                        <tr>
+                            <td><strong>@item.ProjectProposal.Title</strong></td>
+                            <td>@item.ProjectProposal.SubmittedBy.FullName</td>
+                            <td>@item.Supervisor.FullName</td>
+                            <td>
+                                <span class="badge @(item.Status.ToString() == "Confirmed" ? "bg-success" : "bg-info")">
+                                    @item.Status
+                                </span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

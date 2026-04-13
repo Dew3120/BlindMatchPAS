@@ -1,31 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Projects\\BlindMatchPAS\\BlindMatchPAS\\BlindMatchPAS.csproj": {}
+    "C:\\Projects\\BlindMatchPAS\\BlindMatchPAS.csproj": {}
   },
   "projects": {
-    "C:\\Projects\\BlindMatchPAS\\BlindMatchPAS\\BlindMatchPAS.csproj": {
+    "C:\\Projects\\BlindMatchPAS\\BlindMatchPAS.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Projects\\BlindMatchPAS\\BlindMatchPAS\\BlindMatchPAS.csproj",
+        "projectUniqueName": "C:\\Projects\\BlindMatchPAS\\BlindMatchPAS.csproj",
         "projectName": "BlindMatchPAS",
-        "projectPath": "C:\\Projects\\BlindMatchPAS\\BlindMatchPAS\\BlindMatchPAS.csproj",
-        "packagesPath": "C:\\Users\\Dev\\.nuget\\packages\\",
-        "outputPath": "C:\\Projects\\BlindMatchPAS\\BlindMatchPAS\\obj\\",
+        "projectPath": "C:\\Projects\\BlindMatchPAS\\BlindMatchPAS.csproj",
+        "packagesPath": "C:\\Users\\charl_ksy4toi\\.nuget\\packages\\",
+        "outputPath": "C:\\Projects\\BlindMatchPAS\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Dev\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\charl_ksy4toi\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -84,7 +78,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.301/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.312/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
