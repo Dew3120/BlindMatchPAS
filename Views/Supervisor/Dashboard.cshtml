@@ -1,0 +1,27 @@
+@model IEnumerable<BlindMatchPAS.Models.ProjectProposal>
+
+@{
+    ViewData["Title"] = "Supervisor Dashboard";
+}
+
+<div class="container mt-5">
+    <h1 class="mb-4">Supervisor Dashboard</h1>
+    
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h4 class="card-title text-primary">Welcome to the Blind-Match System</h4>
+            <p class="card-text">You are successfully logged into your secure portal.</p>
+            
+            <hr />
+            
+            <div class="mt-4 p-3 bg-light rounded d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="badge bg-success fs-5">@(Model?.Count() ?? 0)</span> 
+                    <span class="ms-2 fw-bold">Proposals available in your expertise area</span>
+                </div>
+                
+                <a asp-action="BrowseProposals" class="btn btn-primary px-4">Browse Anonymous Proposals</a>
+            </div>
+        </div>
+    </div>
+</div>

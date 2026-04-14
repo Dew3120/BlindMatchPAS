@@ -1,0 +1,44 @@
+@model IEnumerable<BlindMatchPAS.Models.ProjectProposal>
+
+@{
+    ViewData["Title"] = "Browse Proposals";
+}
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Anonymous Project Proposals</h2>
+        <a asp-action="Dashboard" class="btn btn-outline-secondary">Back to Dashboard</a>
+    </div>
+    
+    <p class="text-muted">These projects align with your selected expertise areas. Student identities are hidden to ensure unbiased selection.</p>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">There are currently no new proposals matching your expertise areas.</div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 shadow-sm border-info">
+                        <div class="card-header bg-info text-dark fw-bold">
+                            @item.Title
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text"><strong>Abstract:</strong> @item.Abstract</p>
+                            <p class="card-text"><strong>Tech Stack:</strong> @item.TechnicalStack</p>
+                        </div>
+                        <div class="card-footer bg-transparent border-top-0">
+                            <form asp-action="ExpressInterest" method="post">
+                                <input type="hidden" name="proposalId" value="@item.Id" />
+                                <button type="submit" class="btn btn-success w-100">Express Interest</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
