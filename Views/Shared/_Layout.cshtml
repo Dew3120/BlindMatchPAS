@@ -3,48 +3,68 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - BlindMatchPAS</title>
-    <script type="importmap"></script>
+    <title>@ViewData["Title"] - BlindMatch PAS</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/BlindMatchPAS.styles.css" asp-append-version="true" />
 </head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">BlindMatchPAS</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+<body style="background-color: #FAFAF8; color: #2C2A26;">
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - BlindMatchPAS - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <nav style="background-color: #1A1F36; padding: 12px 24px;">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <a href="/" style="text-decoration: none; display: flex; align-items: center; gap: 10px;">
+                <div style="width: 32px; height: 32px; background: #C9A96E; border-radius: 6px; display: flex; align-items: center; justify-content: center;">
+                    <span style="color: #1A1F36; font-weight: bold; font-size: 16px;">B</span>
+                </div>
+                <span style="color: #C9A96E; font-size: 18px; font-weight: 600; letter-spacing: 0.3px;">Blind-Match PAS</span>
+            </a>
+            <div class="d-flex align-items-center gap-3">
+                @if (User.Identity != null && User.Identity.IsAuthenticated)
+                {
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-controller="Admin" asp-action="Index" style="color: #9CA3B4; text-decoration: none; font-size: 14px;">Admin Panel</a>
+                    }
+                    @if (User.IsInRole("ModuleLeader"))
+                    {
+                        <a asp-controller="ModuleLeader" asp-action="Index" style="color: #9CA3B4; text-decoration: none; font-size: 14px;">Dashboard</a>
+                    }
+                    @if (User.IsInRole("Supervisor"))
+                    {
+                        <a asp-controller="Supervisor" asp-action="Dashboard" style="color: #9CA3B4; text-decoration: none; font-size: 14px;">Dashboard</a>
+                        <a asp-controller="Supervisor" asp-action="MyExpertise" style="color: #9CA3B4; text-decoration: none; font-size: 14px;">My Expertise</a>
+                        <a asp-controller="Supervisor" asp-action="MyMatches" style="color: #9CA3B4; text-decoration: none; font-size: 14px;">My Matches</a>
+                    }
+                    @if (User.IsInRole("Student"))
+                    {
+                        <a asp-controller="Student" asp-action="Dashboard" style="color: #9CA3B4; text-decoration: none; font-size: 14px;">Dashboard</a>
+                    }
+                    <div style="display: flex; align-items: center; gap: 8px; margin-left: 16px;">
+                        <div style="width: 32px; height: 32px; border-radius: 50%; background: #2D3555; display: flex; align-items: center; justify-content: center; color: #C9A96E; font-size: 12px; font-weight: 600;">
+                            @User.Identity.Name?.Substring(0, 1).ToUpper()
+                        </div>
+                        <form asp-controller="Account" asp-action="Logout" method="post" style="margin: 0;">
+                            <button type="submit" style="background: none; border: none; color: #9CA3B4; font-size: 13px; cursor: pointer;">Logout</button>
+                        </form>
+                    </div>
+                }
+                else
+                {
+                    <a asp-controller="Account" asp-action="Login" style="color: #C9A96E; text-decoration: none; font-size: 14px;">Login</a>
+                }
+            </div>
         </div>
+    </nav>
+
+    <main class="container mt-4 mb-5">
+        @RenderBody()
+    </main>
+
+    <footer style="background-color: #0F1225; padding: 20px; text-align: center;">
+        <p style="color: #8A8578; font-size: 13px; margin: 0;">Blind-Match PAS &copy; 2026 — Project Approval System</p>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
