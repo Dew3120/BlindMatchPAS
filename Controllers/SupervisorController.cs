@@ -61,11 +61,5 @@ namespace BlindMatchPAS.Controllers
             return RedirectToAction(nameof(BrowseProposals));
         }
 
-        // 4. View My Matches
-        public async Task<IActionResult> MyMatches()
-        {
-            var user = await _userManager.GetUserAsync(User);
-            return View(null); 
-        }
     }
 }
