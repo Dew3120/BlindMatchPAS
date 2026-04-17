@@ -36,7 +36,7 @@ builder.Services.AddScoped<IMatchingService, BlindMatchService>();
 
 var app = builder.Build();
 
-// Seed roles and admin user
+// Seed roles and test users
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -67,6 +67,55 @@ using (var scope = app.Services.CreateScope())
         };
         await userManager.CreateAsync(adminUser, "Admin123");
         await userManager.AddToRoleAsync(adminUser, "Admin");
+    }
+
+    // Create test Supervisor
+    var supervisorEmail = "supervisor@blindmatch.com";
+    var supervisorUser = await userManager.FindByEmailAsync(supervisorEmail);
+    if (supervisorUser == null)
+    {
+        supervisorUser = new ApplicationUser
+        {
+            UserName = supervisorEmail,
+            Email = supervisorEmail,
+            FullName = "Dr. Test Supervisor",
+            EmailConfirmed = true
+        };
+        await userManager.CreateAsync(supervisorUser, "Super123");
+        await userManager.AddToRoleAsync(supervisorUser, "Supervisor");
+    }
+
+    // Create test Student
+    var studentEmail = "student@blindmatch.com";
+    var studentUser = await userManager.FindByEmailAsync(studentEmail);
+    if (studentUser == null)
+    {
+        studentUser = new ApplicationUser
+        {
+            UserName = studentEmail,
+            Email = studentEmail,
+            FullName = "Test Student",
+            StudentId = "STU001",
+            EmailConfirmed = true
+        };
+        await userManager.CreateAsync(studentUser, "Student123");
+        await userManager.AddToRoleAsync(studentUser, "Student");
+    }
+
+    // Create test Module Leader
+    var leaderEmail = "leader@blindmatch.com";
+    var leaderUser = await userManager.FindByEmailAsync(leaderEmail);
+    if (leaderUser == null)
+    {
+        leaderUser = new ApplicationUser
+        {
+            UserName = leaderEmail,
+            Email = leaderEmail,
+            FullName = "Prof. Module Leader",
+            EmailConfirmed = true
+        };
+        await userManager.CreateAsync(leaderUser, "Leader123");
+        await userManager.AddToRoleAsync(leaderUser, "ModuleLeader");
     }
 }
 

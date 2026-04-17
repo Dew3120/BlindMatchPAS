@@ -1,0 +1,124 @@
+@model List<BlindMatchPAS.Models.ViewModels.MyMatchViewModel>
+
+@{
+    ViewData["Title"] = "My Matches";
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success" style="background: #E8F5ED; border: 1px solid #2D8A5E; color: #1B5E3F;">
+        @TempData["Success"]
+    </div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger" style="background: #F5E0E0; border: 1px solid #C75050; color: #791F1F;">
+        @TempData["Error"]
+    </div>
+}
+
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+    <div>
+        <h4 style="color: #1A1F36; font-weight: 600; margin-bottom: 4px;">My matches</h4>
+        <p style="color: #8A8578; font-size: 14px; margin: 0;">Track your expressed interests and confirmed matches</p>
+    </div>
+    <div style="display: flex; gap: 12px;">
+        <div style="background: #FBF7F0; padding: 8px 16px; border-radius: 8px; text-align: center;">
+            <span style="font-size: 20px; font-weight: 600; color: #C9A96E;">@Model.Count(m => m.Status == BlindMatchPAS.Models.Enums.MatchStatus.Interested)</span>
+            <span style="font-size: 12px; color: #8A8578; display: block;">Interested</span>
+        </div>
+        <div style="background: #E8F5ED; padding: 8px 16px; border-radius: 8px; text-align: center;">
+            <span style="font-size: 20px; font-weight: 600; color: #2D8A5E;">@Model.Count(m => m.Status == BlindMatchPAS.Models.Enums.MatchStatus.Confirmed)</span>
+            <span style="font-size: 12px; color: #8A8578; display: block;">Confirmed</span>
+        </div>
+    </div>
+</div>
+
+@if (!Model.Any())
+{
+    <div style="text-align: center; padding: 60px; background: #F4F3F0; border-radius: 12px; border: 0.5px solid #E0DDD6;">
+        <p style="color: #8A8578; font-size: 16px; margin-bottom: 8px;">No matches yet</p>
+        <p style="color: #8A8578; font-size: 14px;">Browse proposals and express interest to start matching.</p>
+        <a asp-action="Dashboard" style="padding: 8px 20px; background: #1A1F36; color: #C9A96E; border-radius: 8px; text-decoration: none; font-size: 14px; font-weight: 500;">Browse Proposals</a>
+    </div>
+}
+
+<div style="display: flex; flex-direction: column; gap: 16px;">
+    @foreach (var match in Model)
+    {
+        <div style="background: #FAFAF8; border-radius: 12px; padding: 24px; border: @(match.Status == BlindMatchPAS.Models.Enums.MatchStatus.Confirmed ? "2px solid #2D8A5E" : "0.5px solid #E0DDD6");">
+
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                <div style="flex: 1;">
+                    <h5 style="color: #1A1F36; font-weight: 600; margin-bottom: 8px;">@match.ProjectTitle</h5>
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <span style="font-size: 12px; padding: 3px 10px; background: #FBF7F0; color: #7A6535; border-radius: 20px;">@match.ResearchArea</span>
+                        <span style="font-size: 12px; padding: 3px 10px; background: #F0F2F5; color: #1A1F36; border-radius: 20px;">@match.TechnicalStack</span>
+                    </div>
+                </div>
+
+                @if (match.Status == BlindMatchPAS.Models.Enums.MatchStatus.Interested)
+                {
+                    <span style="font-size: 12px; padding: 4px 14px; background: #FBF7F0; color: #A68B4B; border-radius: 20px; font-weight: 500;">Interested</span>
+                }
+                else if (match.Status == BlindMatchPAS.Models.Enums.MatchStatus.Confirmed)
+                {
+                    <span style="font-size: 12px; padding: 4px 14px; background: #E8F5ED; color: #1B5E3F; border-radius: 20px; font-weight: 500;">Confirmed</span>
+                }
+                else
+                {
+                    <span style="font-size: 12px; padding: 4px 14px; background: #F5E0E0; color: #791F1F; border-radius: 20px; font-weight: 500;">Rejected</span>
+                }
+            </div>
+
+            <p style="color: #8A8578; font-size: 14px; line-height: 1.6; margin-bottom: 16px;">@match.Abstract</p>
+
+            <div style="font-size: 12px; color: #8A8578; margin-bottom: 16px;">
+                Interest expressed: @match.ExpressedInterestAt.ToString("dd MMM yyyy, HH:mm")
+                @if (match.ConfirmedAt != null)
+                {
+                    <span style="margin-left: 16px;">Confirmed: @match.ConfirmedAt.Value.ToString("dd MMM yyyy, HH:mm")</span>
+                }
+            </div>
+
+            @if (match.Status == BlindMatchPAS.Models.Enums.MatchStatus.Interested)
+            {
+                <div style="display: flex; gap: 8px; padding-top: 12px; border-top: 0.5px solid #E0DDD6;">
+                    <form asp-action="ConfirmMatch" method="post" style="margin: 0;">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="matchId" value="@match.MatchId" />
+                        <button type="submit" style="padding: 8px 20px; background: #2D8A5E; color: white; border: none; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer;">
+                            Confirm Match
+                        </button>
+                    </form>
+                    <form asp-action="RejectMatch" method="post" style="margin: 0;">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="matchId" value="@match.MatchId" />
+                        <button type="submit" style="padding: 8px 20px; background: transparent; border: 0.5px solid #E0DDD6; border-radius: 6px; color: #8A8578; font-size: 13px; cursor: pointer;">
+                            Reject
+                        </button>
+                    </form>
+                </div>
+            }
+
+            @if (match.IsIdentityRevealed && match.StudentName != null)
+            {
+                <div style="margin-top: 16px; padding: 16px; background: #1A1F36; border-radius: 10px;">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+                        <div style="width: 8px; height: 8px; background: #2D8A5E; border-radius: 50%;"></div>
+                        <span style="font-size: 13px; color: #2D8A5E; font-weight: 500;">Identity revealed</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div style="width: 40px; height: 40px; border-radius: 50%; background: #2D3555; display: flex; align-items: center; justify-content: center; color: #C9A96E; font-size: 14px; font-weight: 600;">
+                            @match.StudentName?.Substring(0, 1).ToUpper()
+                        </div>
+                        <div>
+                            <p style="color: #E8E8E8; font-size: 14px; font-weight: 500; margin: 0;">@match.StudentName</p>
+                            <p style="color: #9CA3B4; font-size: 13px; margin: 2px 0 0;">@match.StudentEmail</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
