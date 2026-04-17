@@ -133,10 +133,12 @@
                     @if (User.IsInRole("Admin"))
                     {
                         <a asp-controller="Admin" asp-action="Index" class="nav-link-custom">Admin Panel</a>
+                        <a asp-controller="Admin" asp-action="ManageUsers" class="nav-link-custom">Manage Users</a>
                     }
                     @if (User.IsInRole("ModuleLeader"))
                     {
                         <a asp-controller="ModuleLeader" asp-action="Index" class="nav-link-custom">Dashboard</a>
+                        <a asp-controller="ModuleLeader" asp-action="AllMatches" class="nav-link-custom">All Matches</a>
                     }
                     @if (User.IsInRole("Supervisor"))
                     {
@@ -147,6 +149,7 @@
                     @if (User.IsInRole("Student"))
                     {
                         <a asp-controller="Student" asp-action="Dashboard" class="nav-link-custom">Dashboard</a>
+                        <a asp-controller="Student" asp-action="Create" class="nav-link-custom">New Proposal</a>
                     }
 
                     <div style="display: flex; align-items: center; gap: 8px; margin-left: 16px;">
