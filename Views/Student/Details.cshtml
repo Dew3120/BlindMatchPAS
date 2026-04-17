@@ -1,0 +1,72 @@
+@model BlindMatchPAS.Models.ProjectProposal
+@{
+    ViewData["Title"] = "Proposal Details";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h4>Proposal Details</h4>
+                </div>
+                <div class="card-body">
+
+                    <dl class="row">
+                        <dt class="col-sm-3">Title</dt>
+                        <dd class="col-sm-9">@Model.Title</dd>
+
+                        <dt class="col-sm-3">Abstract</dt>
+                        <dd class="col-sm-9">@Model.Abstract</dd>
+
+                        <dt class="col-sm-3">Technical Stack</dt>
+                        <dd class="col-sm-9">@Model.TechnicalStack</dd>
+
+                        <dt class="col-sm-3">Research Area</dt>
+                        <dd class="col-sm-9">@Model.ResearchArea?.Name</dd>
+
+                        <dt class="col-sm-3">Submitted</dt>
+                        <dd class="col-sm-9">@Model.SubmittedAt.ToShortDateString()</dd>
+
+                        <dt class="col-sm-3">Status</dt>
+                        <dd class="col-sm-9">
+                            @switch (Model.Status.ToString())
+                            {
+                                case "Pending":
+                                    <span class="badge bg-warning text-dark">Pending</span>
+                                    break;
+                                case "UnderReview":
+                                    <span class="badge bg-primary">Under Review</span>
+                                    break;
+                                case "Matched":
+                                    <span class="badge bg-success">Matched</span>
+                                    break;
+                                case "Withdrawn":
+                                    <span class="badge bg-secondary">Withdrawn</span>
+                                    break;
+                            }
+                        </dd>
+                    </dl>
+
+                    @if (Model.Status == BlindMatchPAS.Models.Enums.ProjectStatus.Matched && Model.SubmittedBy != null)
+                    {
+                        <div class="alert alert-success mt-3">
+                            <h5>🎉 Your proposal has been matched!</h5>
+                            <hr />
+                            <p><strong>Supervisor:</strong> @Model.SubmittedBy.FullName</p>
+                            <p><strong>Email:</strong> @Model.SubmittedBy.Email</p>
+                        </div>
+                    }
+
+                </div>
+                <div class="card-footer">
+                    <a asp-action="Dashboard" class="btn btn-secondary">Back to Dashboard</a>
+                    @if (Model.Status == BlindMatchPAS.Models.Enums.ProjectStatus.Pending)
+                    {
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
