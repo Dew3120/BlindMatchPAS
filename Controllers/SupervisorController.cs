@@ -1,23 +1,30 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-<<<<<<< HEAD
+using Microsoft.EntityFrameworkCore;
+using BlindMatchPAS.Data;
 using BlindMatchPAS.Models;
+using BlindMatchPAS.Models.ViewModels;
+using BlindMatchPAS.Models.Enums;
 using BlindMatchPAS.Services;
-using System.Threading.Tasks;
 
 namespace BlindMatchPAS.Controllers
 {
-    [Authorize(Roles = "Supervisor,Admin")]  
+    [Authorize(Roles = "Supervisor")]
     public class SupervisorController : Controller
     {
-        private readonly IMatchingService _matchingService;
+        private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IMatchingService _matchingService;
 
-        public SupervisorController(IMatchingService matchingService, UserManager<ApplicationUser> userManager)
+        public SupervisorController(
+            ApplicationDbContext context,
+            UserManager<ApplicationUser> userManager,
+            IMatchingService matchingService)
         {
-            _matchingService = matchingService;
+            _context = context;
             _userManager = userManager;
+            _matchingService = matchingService;
         }
 
         // 1. The Main Dashboard View
@@ -60,33 +67,6 @@ namespace BlindMatchPAS.Controllers
             }
     
             return RedirectToAction(nameof(BrowseProposals));
-        }
-
-=======
-using Microsoft.EntityFrameworkCore;
-using BlindMatchPAS.Data;
-using BlindMatchPAS.Models;
-using BlindMatchPAS.Models.ViewModels;
-using BlindMatchPAS.Models.Enums;
-using BlindMatchPAS.Services;
-
-namespace BlindMatchPAS.Controllers
-{
-    [Authorize(Roles = "Supervisor")]
-    public class SupervisorController : Controller
-    {
-        private readonly ApplicationDbContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IMatchingService _matchingService;
-
-        public SupervisorController(
-            ApplicationDbContext context,
-            UserManager<ApplicationUser> userManager,
-            IMatchingService matchingService)
-        {
-            _context = context;
-            _userManager = userManager;
-            _matchingService = matchingService;
         }
 
         // GET: Supervisor/MyExpertise
@@ -206,6 +186,5 @@ namespace BlindMatchPAS.Controllers
 
             return RedirectToAction("MyMatches");
         }
->>>>>>> main
     }
 }

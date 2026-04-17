@@ -4,41 +4,62 @@
     ViewData["Title"] = "Browse Proposals";
 }
 
-<div class="container mt-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Anonymous Project Proposals</h2>
-        <a asp-action="Dashboard" class="btn btn-outline-secondary">Back to Dashboard</a>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success" style="background: #E8F5ED; border: 1px solid #2D8A5E; color: #1B5E3F;">
+        @TempData["SuccessMessage"]
     </div>
-    
-    <p class="text-muted">These projects align with your selected expertise areas. Student identities are hidden to ensure unbiased selection.</p>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger" style="background: #F5E0E0; border: 1px solid #C75050; color: #791F1F;">
+        @TempData["ErrorMessage"]
+    </div>
+}
 
-    @if (!Model.Any())
+<div style="margin-bottom: 24px;">
+    <h4 style="color: #1A1F36; font-weight: 600; margin-bottom: 4px;">Anonymous Proposals</h4>
+    <p style="color: #8A8578; font-size: 14px; margin: 0;">Browse and express interest in projects matching your expertise.</p>
+</div>
+
+@if (!Model.Any())
+{
+    <div style="text-align: center; padding: 60px; background: #F4F3F0; border-radius: 12px; border: 0.5px solid #E0DDD6;">
+        <p style="color: #8A8578; font-size: 16px; margin-bottom: 8px;">No proposals available</p>
+        <p style="color: #8A8578; font-size: 14px;">There are currently no unmatched proposals in your selected research areas.</p>
+        <a asp-action="MyExpertise" style="padding: 8px 20px; background: #1A1F36; color: #C9A96E; border-radius: 8px; text-decoration: none; font-size: 14px; font-weight: 500; display: inline-block; margin-top: 12px;">Update My Expertise</a>
+    </div>
+}
+
+<div style="display: flex; flex-direction: column; gap: 16px;">
+    @foreach (var proposal in Model)
     {
-        <div class="alert alert-info">There are currently no new proposals matching your expertise areas.</div>
-    }
-    else
-    {
-        <div class="row">
-            @foreach (var item in Model)
-            {
-                <div class="col-md-6 mb-4">
-                    <div class="card h-100 shadow-sm border-info">
-                        <div class="card-header bg-info text-dark fw-bold">
-                            @item.Title
-                        </div>
-                        <div class="card-body">
-                            <p class="card-text"><strong>Abstract:</strong> @item.Abstract</p>
-                            <p class="card-text"><strong>Tech Stack:</strong> @item.TechnicalStack</p>
-                        </div>
-                        <div class="card-footer bg-transparent border-top-0">
-                            <form asp-action="ExpressInterest" method="post">
-                                <input type="hidden" name="proposalId" value="@item.Id" />
-                                <button type="submit" class="btn btn-success w-100">Express Interest</button>
-                            </form>
-                        </div>
+        <div style="background: #FAFAF8; border-radius: 12px; padding: 24px; border: 0.5px solid #E0DDD6;">
+            
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                <div style="flex: 1;">
+                    <h5 style="color: #1A1F36; font-weight: 600; margin-bottom: 8px;">@proposal.Title</h5>
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <span style="font-size: 12px; padding: 3px 10px; background: #FBF7F0; color: #7A6535; border-radius: 20px;">@proposal.ResearchArea?.Name</span>
+                        <span style="font-size: 12px; padding: 3px 10px; background: #F0F2F5; color: #1A1F36; border-radius: 20px;">@proposal.TechnicalStack</span>
                     </div>
                 </div>
-            }
+                
+                <span style="font-size: 12px; padding: 4px 14px; background: #E8F5ED; color: #1B5E3F; border-radius: 20px; font-weight: 500;">Blind Review</span>
+            </div>
+
+            <p style="color: #8A8578; font-size: 14px; line-height: 1.6; margin-bottom: 20px;">@proposal.Abstract</p>
+
+            <div style="display: flex; padding-top: 16px; border-top: 0.5px solid #E0DDD6;">
+                <form asp-action="ExpressInterest" method="post" style="margin: 0;">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="proposalId" value="@proposal.Id" />
+                    <button type="submit" style="padding: 10px 24px; background: #1A1F36; color: #C9A96E; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer;">
+                        Express Interest
+                    </button>
+                </form>
+            </div>
+            
         </div>
     }
 </div>
