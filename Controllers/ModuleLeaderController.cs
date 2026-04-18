@@ -93,6 +93,7 @@ namespace BlindMatchPAS.Controllers
                 IsIdentityRevealed = false
             };
 
+            
             oldMatch.ProjectProposal.Status = ProjectStatus.UnderReview;
 
             try

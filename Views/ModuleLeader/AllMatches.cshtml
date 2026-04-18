@@ -2,26 +2,30 @@
 @{ ViewData["Title"] = "All Matches"; }
 
 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-    <h4>All Matches</h4>
-    <a asp-action="Index" style="padding: 8px 16px; background: #1A1F36; color: #C9A96E; border-radius: 8px; text-decoration: none;">Back</a>
+    <div>
+        <h4 style="font-weight: 600;">All Matches</h4>
+        <p style="color: #8A8578; font-size: 14px; margin: 0;">Full history of all student-supervisor match records</p>
+    </div>
+    <a asp-action="Index" style="padding: 8px 16px; background: #1A1F36; color: #C9A96E; border-radius: 8px; text-decoration: none; font-size: 13px;">Back to Dashboard</a>
 </div>
 
 @foreach (var match in Model) {
     <div style="background: #FAFAF8; border-radius: 10px; padding: 20px; border: 0.5px solid #E0DDD6; margin-bottom: 15px;">
-        <div style="display: flex; justify-content: space-between;">
-            <h5>@match.ProjectProposal.Title</h5>
-            <span class="badge" style="background: #FBF7F0; color: #A68B4B; padding: 5px 10px; border-radius: 15px;">@match.Status</span>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+            <h5 style="margin: 0; color: #1A1F36;">@match.ProjectProposal.Title</h5>
+            <span style="font-size: 12px; padding: 4px 12px; border-radius: 15px; background: #FBF7F0; color: #A68B4B;">@match.Status</span>
         </div>
         <p style="font-size: 14px; color: #666;">Student: <b>@match.ProjectProposal.SubmittedBy.FullName</b> | Current Supervisor: <b>@match.Supervisor.FullName</b></p>
         
-        <hr />
+        <hr style="border: 0.5px solid #E0DDD6;" />
         
         <form asp-action="ReassignProject" method="post" style="display: flex; gap: 10px; align-items: center;">
             <input type="hidden" name="matchId" value="@match.Id" />
-            <select name="newSupervisorId" asp-items="ViewBag.SupervisorList" class="form-select form-select-sm" style="max-width: 250px;">
-                <option value="">-- Select New Supervisor --</option>
+            <label style="font-size: 13px; color: #8A8578;">Reassign to:</label>
+            <select name="newSupervisorId" asp-items="ViewBag.SupervisorList" class="form-control" style="max-width: 250px; font-size: 13px;">
+                <option value="">-- Choose Supervisor --</option>
             </select>
-            <button type="submit" class="btn btn-sm btn-dark">Reassign</button>
+            <button type="submit" style="padding: 5px 15px; background: #1A1F36; color: #fff; border: none; border-radius: 5px; font-size: 13px;">Update</button>
         </form>
     </div>
 }
