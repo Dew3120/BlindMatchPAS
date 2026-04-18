@@ -1,0 +1,60 @@
+@{
+    ViewData["Title"] = "Manage Users";
+    var userList = ViewBag.UserList as List<(BlindMatchPAS.Models.ApplicationUser User, string Role)>;
+}
+
+@if (TempData["Success"] != null)
+{
+    <div style="background: #E8F5ED; border: 1px solid #2D8A5E; color: #1B5E3F; padding: 12px; border-radius: 8px; margin-bottom: 16px;">
+        @TempData["Success"]
+    </div>
+}
+@if (TempData["Error"] != null)
+{
+    <div style="background: #F5E0E0; border: 1px solid #C75050; color: #791F1F; padding: 12px; border-radius: 8px; margin-bottom: 16px;">
+        @TempData["Error"]
+    </div>
+}
+
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+    <div>
+        <h4 style="color: #1A1F36; font-weight: 600; margin-bottom: 4px;">Manage Users</h4>
+        <p style="color: #8A8578; font-size: 14px; margin: 0;">View and manage all system accounts</p>
+    </div>
+    <div style="display: flex; gap: 8px;">
+        <a asp-action="Index" style="padding: 8px 20px; background: transparent; border: 0.5px solid #E0DDD6; border-radius: 8px; color: #8A8578; font-size: 13px; text-decoration: none;">Back to Dashboard</a>
+        <a asp-action="CreateUser" style="padding: 8px 20px; background: #1A1F36; color: #C9A96E; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 500;">+ Create User</a>
+    </div>
+</div>
+
+@if (userList == null || !userList.Any())
+{
+    <div style="text-align: center; padding: 60px; background: #F4F3F0; border-radius: 12px; border: 0.5px solid #E0DDD6;">
+        <p style="color: #8A8578; font-size: 16px;">No users in the system.</p>
+    </div>
+}
+else
+{
+    @foreach (var item in userList)
+    {
+        <div style="background: #FAFAF8; border-radius: 10px; padding: 20px; border: 0.5px solid #E0DDD6; margin-bottom: 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h6 style="color: #1A1F36; font-weight: 600; margin-bottom: 4px;">@item.User.FullName</h6>
+                    <span style="font-size: 13px; color: #8A8578;">@item.User.Email</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 12px; padding: 4px 14px; border-radius: 20px; font-weight: 500;
+                        background: @(item.Role == "Admin" ? "#FBF7F0" : item.Role == "Supervisor" ? "#E6F1FB" : item.Role == "ModuleLeader" ? "#E8F5ED" : "#FBF7F0");
+                        color: @(item.Role == "Admin" ? "#C9A96E" : item.Role == "Supervisor" ? "#185FA5" : item.Role == "ModuleLeader" ? "#1B5E3F" : "#A68B4B");">
+                        @item.Role
+                    </span>
+                    <form asp-action="DeleteUser" asp-route-id="@item.User.Id" method="post" style="margin: 0;">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" onclick="return confirm('Are you sure you want to delete this user?')" style="padding: 6px 14px; background: transparent; border: 0.5px solid #C75050; border-radius: 6px; color: #791F1F; font-size: 13px; cursor: pointer;">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+}
