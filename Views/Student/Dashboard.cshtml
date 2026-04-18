@@ -1,78 +1,65 @@
 @model IEnumerable<BlindMatchPAS.Models.ProjectProposal>
+
 @{
-    ViewData["Title"] = "My Dashboard";
+    ViewData["Title"] = "Student Dashboard";
 }
 
-<div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>My Project Proposals</h2>
-        <a asp-action="Create" class="btn btn-primary">+ New Proposal</a>
+@if (TempData["Success"] != null)
+{
+    <div style="background: #E8F5ED; border: 1px solid #2D8A5E; color: #1B5E3F; padding: 12px; border-radius: 8px; margin-bottom: 16px;">
+        @TempData["Success"]
     </div>
+}
+@if (TempData["Error"] != null)
+{
+    <div style="background: #F5E0E0; border: 1px solid #C75050; color: #791F1F; padding: 12px; border-radius: 8px; margin-bottom: 16px;">
+        @TempData["Error"]
+    </div>
+}
 
-    @if (TempData["Success"] != null)
-    {
-        <div class="alert alert-success">@TempData["Success"]</div>
-    }
-    @if (TempData["Error"] != null)
-    {
-        <div class="alert alert-danger">@TempData["Error"]</div>
-    }
-
-    @if (!Model.Any())
-    {
-        <div class="alert alert-info">You have not submitted any proposals yet.</div>
-    }
-    else
-    {
-        <table class="table table-bordered table-hover">
-            <thead class="table-dark">
-                <tr>
-                    <th>Title</th>
-                    <th>Research Area</th>
-                    <th>Submitted</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var proposal in Model)
-                {
-                    <tr>
-                        <td>@proposal.Title</td>
-                        <td>@proposal.ResearchArea?.Name</td>
-                        <td>@proposal.SubmittedAt.ToShortDateString()</td>
-                        <td>
-                            @switch (proposal.Status.ToString())
-                            {
-                                case "Pending":
-                                    <span class="badge bg-warning text-dark">Pending</span>
-                                    break;
-                                case "UnderReview":
-                                    <span class="badge bg-primary">Under Review</span>
-                                    break;
-                                case "Matched":
-                                    <span class="badge bg-success">Matched</span>
-                                    break;
-                                case "Withdrawn":
-                                    <span class="badge bg-secondary">Withdrawn</span>
-                                    break;
-                            }
-                        </td>
-                        <td>
-                            <a asp-action="Details" asp-route-id="@proposal.Id" class="btn btn-sm btn-info">Details</a>
-                            @if (proposal.Status.ToString() == "Pending")
-                            {
-                                <a asp-action="Edit" asp-route-id="@proposal.Id" class="btn btn-sm btn-warning">Edit</a>
-                                <form asp-action="Withdraw" asp-route-id="@proposal.Id" method="post" style="display:inline">
-                                    @Html.AntiForgeryToken()
-                                    <button type="submit" class="btn btn-sm btn-danger"
-                                        onclick="return confirm('Withdraw this proposal?')">Withdraw</button>
-                                </form>
-                            }
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    }
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+    <div>
+        <h4 style="color: #1A1F36; font-weight: 600; margin-bottom: 4px;">My Project Proposals</h4>
+        <p style="color: #8A8578; font-size: 14px; margin: 0;">Submit and track your project proposals</p>
+    </div>
+    <a asp-action="Create" style="padding: 8px 20px; background: #1A1F36; color: #C9A96E; border-radius: 8px; text-decoration: none; font-size: 14px; font-weight: 500;">+ New Proposal</a>
 </div>
+
+@if (!Model.Any())
+{
+    <div style="text-align: center; padding: 60px; background: #F4F3F0; border-radius: 12px; border: 0.5px solid #E0DDD6;">
+        <p style="color: #8A8578; font-size: 16px;">You have not submitted any proposals yet.</p>
+        <a asp-action="Create" style="padding: 8px 20px; background: #1A1F36; color: #C9A96E; border-radius: 8px; text-decoration: none; font-size: 14px;">Submit Your First Proposal</a>
+    </div>
+}
+else
+{
+    @foreach (var proposal in Model)
+    {
+        <div style="background: #FAFAF8; border-radius: 10px; padding: 20px; border: 0.5px solid #E0DDD6; margin-bottom: 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div style="flex: 1;">
+                    <h6 style="color: #1A1F36; font-weight: 600; margin-bottom: 4px;">@proposal.Title</h6>
+                    <span style="font-size: 12px; padding: 3px 10px; background: #FBF7F0; color: #7A6535; border-radius: 20px;">@proposal.ResearchArea?.Name</span>
+                    <span style="font-size: 12px; color: #8A8578; margin-left: 8px;">@proposal.SubmittedAt.ToString("dd MMM yyyy")</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 12px; padding: 4px 14px; border-radius: 20px; font-weight: 500;
+                        background: @(proposal.Status.ToString() == "Pending" ? "#FBF7F0" : proposal.Status.ToString() == "UnderReview" ? "#E6F1FB" : proposal.Status.ToString() == "Matched" ? "#E8F5ED" : "#F5E0E0");
+                        color: @(proposal.Status.ToString() == "Pending" ? "#C9A96E" : proposal.Status.ToString() == "UnderReview" ? "#185FA5" : proposal.Status.ToString() == "Matched" ? "#1B5E3F" : "#791F1F");">
+                        @proposal.Status
+                    </span>
+                    <a asp-action="Details" asp-route-id="@proposal.Id" style="padding: 6px 14px; background: transparent; border: 0.5px solid #E0DDD6; border-radius: 6px; color: #8A8578; font-size: 13px; text-decoration: none;">Details</a>
+                    @if (proposal.Status.ToString() == "Pending")
+                    {
+                        <a asp-action="Edit" asp-route-id="@proposal.Id" style="padding: 6px 14px; background: transparent; border: 0.5px solid #C9A96E; border-radius: 6px; color: #A68B4B; font-size: 13px; text-decoration: none;">Edit</a>
+                        <form asp-action="Withdraw" asp-route-id="@proposal.Id" method="post" style="margin: 0;">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" onclick="return confirm('Withdraw this proposal?')" style="padding: 6px 14px; background: transparent; border: 0.5px solid #C75050; border-radius: 6px; color: #791F1F; font-size: 13px; cursor: pointer;">Withdraw</button>
+                        </form>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+}

@@ -1,54 +1,50 @@
 @model BlindMatchPAS.Models.ViewModels.CreateProposalViewModel
+
 @{
     ViewData["Title"] = "New Proposal";
 }
 
-<div class="container mt-4">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header bg-primary text-white">
-                    <h4>Submit New Project Proposal</h4>
-                </div>
-                <div class="card-body">
-                    <form asp-action="Create" method="post">
-                        @Html.AntiForgeryToken()
-
-                        <div class="mb-3">
-                            <label asp-for="Title" class="form-label"></label>
-                            <input asp-for="Title" class="form-control" placeholder="Enter project title" />
-                            <span asp-validation-for="Title" class="text-danger"></span>
-                        </div>
-
-                        <div class="mb-3">
-                            <label asp-for="Abstract" class="form-label"></label>
-                            <textarea asp-for="Abstract" class="form-control" rows="5" placeholder="Describe your project..."></textarea>
-                            <span asp-validation-for="Abstract" class="text-danger"></span>
-                        </div>
-
-                        <div class="mb-3">
-                            <label asp-for="TechnicalStack" class="form-label"></label>
-                            <input asp-for="TechnicalStack" class="form-control" placeholder="e.g. React, Node.js, SQL Server" />
-                            <span asp-validation-for="TechnicalStack" class="text-danger"></span>
-                        </div>
-
-                        <div class="mb-3">
-                            <label asp-for="ResearchAreaId" class="form-label">Research Area</label>
-                            <select asp-for="ResearchAreaId" class="form-select"
-                                asp-items="@(new SelectList(Model.ResearchAreas, "Id", "Name"))">
-                                <option value="">-- Select Research Area --</option>
-                            </select>
-                            <span asp-validation-for="ResearchAreaId" class="text-danger"></span>
-                        </div>
-
-                        <div class="d-flex justify-content-between">
-                            <a asp-action="Dashboard" class="btn btn-secondary">Cancel</a>
-                            <button type="submit" class="btn btn-primary">Submit Proposal</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div style="background: #F4F3F0; border-radius: 12px; padding: 24px; border: 0.5px solid #E0DDD6; margin-bottom: 24px;">
+            <h4 style="color: #1A1F36; font-weight: 600; margin-bottom: 4px;">Submit New Proposal</h4>
+            <p style="color: #8A8578; font-size: 14px; margin-bottom: 0;">Your identity will be hidden from supervisors until a match is confirmed</p>
         </div>
+
+        <form asp-action="Create" method="post">
+            @Html.AntiForgeryToken()
+
+            <div style="margin-bottom: 16px;">
+                <label asp-for="Title" style="font-size: 14px; font-weight: 500; color: #2C2A26; display: block; margin-bottom: 6px;"></label>
+                <input asp-for="Title" style="width: 100%; padding: 10px 14px; border: 0.5px solid #E0DDD6; border-radius: 8px; font-size: 14px; background: #FAFAF8;" placeholder="Enter project title" />
+                <span asp-validation-for="Title" style="color: #791F1F; font-size: 12px;"></span>
+            </div>
+
+            <div style="margin-bottom: 16px;">
+                <label asp-for="Abstract" style="font-size: 14px; font-weight: 500; color: #2C2A26; display: block; margin-bottom: 6px;"></label>
+                <textarea asp-for="Abstract" rows="5" style="width: 100%; padding: 10px 14px; border: 0.5px solid #E0DDD6; border-radius: 8px; font-size: 14px; background: #FAFAF8;" placeholder="Describe your project..."></textarea>
+                <span asp-validation-for="Abstract" style="color: #791F1F; font-size: 12px;"></span>
+            </div>
+
+            <div style="margin-bottom: 16px;">
+                <label asp-for="TechnicalStack" style="font-size: 14px; font-weight: 500; color: #2C2A26; display: block; margin-bottom: 6px;"></label>
+                <input asp-for="TechnicalStack" style="width: 100%; padding: 10px 14px; border: 0.5px solid #E0DDD6; border-radius: 8px; font-size: 14px; background: #FAFAF8;" placeholder="e.g. React, Node.js, SQL Server" />
+                <span asp-validation-for="TechnicalStack" style="color: #791F1F; font-size: 12px;"></span>
+            </div>
+
+            <div style="margin-bottom: 24px;">
+                <label asp-for="ResearchAreaId" style="font-size: 14px; font-weight: 500; color: #2C2A26; display: block; margin-bottom: 6px;">Research Area</label>
+                <select asp-for="ResearchAreaId" asp-items="@(new SelectList(Model.ResearchAreas, "Id", "Name"))" style="width: 100%; padding: 10px 14px; border: 0.5px solid #E0DDD6; border-radius: 8px; font-size: 14px; background: #FAFAF8;">
+                    <option value="">-- Select Research Area --</option>
+                </select>
+                <span asp-validation-for="ResearchAreaId" style="color: #791F1F; font-size: 12px;"></span>
+            </div>
+
+            <div style="display: flex; gap: 8px;">
+                <button type="submit" style="padding: 10px 28px; background: #1A1F36; color: #C9A96E; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer;">Submit Proposal</button>
+                <a asp-action="Dashboard" style="padding: 10px 28px; background: transparent; border: 0.5px solid #E0DDD6; border-radius: 8px; color: #8A8578; font-size: 14px; text-decoration: none;">Cancel</a>
+            </div>
+        </form>
     </div>
 </div>
 

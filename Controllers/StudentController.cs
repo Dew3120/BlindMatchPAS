@@ -8,6 +8,8 @@ using BlindMatchPAS.Models.Enums;
 using BlindMatchPAS.Models.ViewModels;
 using BlindMatchPAS.Services;
 
+namespace BlindMatchPAS.Controllers
+{
 [Authorize(Roles = "Student")]
 public class StudentController : Controller
 {
@@ -170,4 +172,5 @@ public class StudentController : Controller
 
         return View(proposal);
     }
+}
 }

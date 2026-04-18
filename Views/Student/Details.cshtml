@@ -1,72 +1,57 @@
 @model BlindMatchPAS.Models.ProjectProposal
+
 @{
     ViewData["Title"] = "Proposal Details";
 }
 
-<div class="container mt-4">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header bg-info text-white">
-                    <h4>Proposal Details</h4>
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div style="background: #F4F3F0; border-radius: 12px; padding: 24px; border: 0.5px solid #E0DDD6; margin-bottom: 24px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h4 style="color: #1A1F36; font-weight: 600; margin: 0;">@Model.Title</h4>
+                <span style="font-size: 12px; padding: 4px 14px; border-radius: 20px; font-weight: 500;
+                    background: @(Model.Status.ToString() == "Pending" ? "#FBF7F0" : Model.Status.ToString() == "UnderReview" ? "#E6F1FB" : Model.Status.ToString() == "Matched" ? "#E8F5ED" : "#F5E0E0");
+                    color: @(Model.Status.ToString() == "Pending" ? "#C9A96E" : Model.Status.ToString() == "UnderReview" ? "#185FA5" : Model.Status.ToString() == "Matched" ? "#1B5E3F" : "#791F1F");">
+                    @Model.Status
+                </span>
+            </div>
+        </div>
+
+        <div style="background: #FAFAF8; border-radius: 10px; padding: 24px; border: 0.5px solid #E0DDD6; margin-bottom: 16px;">
+            <div style="margin-bottom: 16px;">
+                <span style="font-size: 13px; color: #8A8578; display: block; margin-bottom: 4px;">Abstract</span>
+                <p style="color: #2C2A26; font-size: 14px; margin: 0;">@Model.Abstract</p>
+            </div>
+            <div style="margin-bottom: 16px;">
+                <span style="font-size: 13px; color: #8A8578; display: block; margin-bottom: 4px;">Technical Stack</span>
+                <p style="color: #2C2A26; font-size: 14px; margin: 0;">@Model.TechnicalStack</p>
+            </div>
+            <div style="display: flex; gap: 24px;">
+                <div>
+                    <span style="font-size: 13px; color: #8A8578; display: block; margin-bottom: 4px;">Research Area</span>
+                    <span style="font-size: 12px; padding: 3px 10px; background: #FBF7F0; color: #7A6535; border-radius: 20px;">@Model.ResearchArea?.Name</span>
                 </div>
-                <div class="card-body">
-
-                    <dl class="row">
-                        <dt class="col-sm-3">Title</dt>
-                        <dd class="col-sm-9">@Model.Title</dd>
-
-                        <dt class="col-sm-3">Abstract</dt>
-                        <dd class="col-sm-9">@Model.Abstract</dd>
-
-                        <dt class="col-sm-3">Technical Stack</dt>
-                        <dd class="col-sm-9">@Model.TechnicalStack</dd>
-
-                        <dt class="col-sm-3">Research Area</dt>
-                        <dd class="col-sm-9">@Model.ResearchArea?.Name</dd>
-
-                        <dt class="col-sm-3">Submitted</dt>
-                        <dd class="col-sm-9">@Model.SubmittedAt.ToShortDateString()</dd>
-
-                        <dt class="col-sm-3">Status</dt>
-                        <dd class="col-sm-9">
-                            @switch (Model.Status.ToString())
-                            {
-                                case "Pending":
-                                    <span class="badge bg-warning text-dark">Pending</span>
-                                    break;
-                                case "UnderReview":
-                                    <span class="badge bg-primary">Under Review</span>
-                                    break;
-                                case "Matched":
-                                    <span class="badge bg-success">Matched</span>
-                                    break;
-                                case "Withdrawn":
-                                    <span class="badge bg-secondary">Withdrawn</span>
-                                    break;
-                            }
-                        </dd>
-                    </dl>
-
-                    @if (Model.Status == BlindMatchPAS.Models.Enums.ProjectStatus.Matched && Model.SubmittedBy != null)
-                    {
-                        <div class="alert alert-success mt-3">
-                            <h5>🎉 Your proposal has been matched!</h5>
-                            <hr />
-                            <p><strong>Supervisor:</strong> @Model.SubmittedBy.FullName</p>
-                            <p><strong>Email:</strong> @Model.SubmittedBy.Email</p>
-                        </div>
-                    }
-
-                </div>
-                <div class="card-footer">
-                    <a asp-action="Dashboard" class="btn btn-secondary">Back to Dashboard</a>
-                    @if (Model.Status == BlindMatchPAS.Models.Enums.ProjectStatus.Pending)
-                    {
-                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
-                    }
+                <div>
+                    <span style="font-size: 13px; color: #8A8578; display: block; margin-bottom: 4px;">Submitted</span>
+                    <span style="color: #2C2A26; font-size: 14px;">@Model.SubmittedAt.ToString("dd MMM yyyy")</span>
                 </div>
             </div>
+        </div>
+
+        @if (Model.Status == BlindMatchPAS.Models.Enums.ProjectStatus.Matched)
+        {
+            <div style="background: #E8F5ED; border-radius: 10px; padding: 20px; border: 1px solid #2D8A5E; margin-bottom: 16px;">
+                <h6 style="color: #1B5E3F; font-weight: 600; margin-bottom: 8px;">Your proposal has been matched!</h6>
+                <p style="color: #1B5E3F; font-size: 14px; margin: 0;">Contact your supervisor to discuss next steps. Check your matches page for supervisor details.</p>
+            </div>
+        }
+
+        <div style="display: flex; gap: 8px;">
+            <a asp-action="Dashboard" style="padding: 10px 28px; background: transparent; border: 0.5px solid #E0DDD6; border-radius: 8px; color: #8A8578; font-size: 14px; text-decoration: none;">Back to Dashboard</a>
+            @if (Model.Status == BlindMatchPAS.Models.Enums.ProjectStatus.Pending)
+            {
+                <a asp-action="Edit" asp-route-id="@Model.Id" style="padding: 10px 28px; background: #1A1F36; color: #C9A96E; border: none; border-radius: 8px; font-size: 14px; text-decoration: none;">Edit</a>
+            }
         </div>
     </div>
 </div>
