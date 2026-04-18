@@ -1,116 +1,27 @@
 @model IEnumerable<BlindMatchPAS.Models.Match>
- 
-@{
-    ViewData["Title"] = "All Matches";
-}
- 
-@if (TempData["Success"] != null)
-{
-    <div class="alert alert-success"
-         style="background: #E8F5ED;
-                border: 1px solid #2D8A5E;
-                color: #1B5E3F;">
-        @TempData["Success"]
-    </div>
-}
- 
-<div style="display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;">
-    <div>
-        <h4 style="color: #1A1F36;
-                   font-weight: 600;
-                   margin-bottom: 4px;">
-            All Matches
-        </h4>
-        <p style="color: #8A8578;
-                  font-size: 14px;
-                  margin: 0;">
-            Complete list of all match records
-        </p>
-    </div>
-    <a asp-action="Index"
-       style="padding: 8px 20px;
-              background: #1A1F36;
-              color: #C9A96E;
-              border-radius: 8px;
-              text-decoration: none;
-              font-size: 13px;">
-        Back to Dashboard
-    </a>
+@{ ViewData["Title"] = "All Matches"; }
+
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+    <h4>All Matches</h4>
+    <a asp-action="Index" style="padding: 8px 16px; background: #1A1F36; color: #C9A96E; border-radius: 8px; text-decoration: none;">Back</a>
 </div>
- 
-@if (!Model.Any())
-{
-    <div style="text-align: center;
-                padding: 60px;
-                background: #F4F3F0;
-                border-radius: 12px;">
-        <p style="color: #8A8578;">
-            No matches in the system yet.
-        </p>
-    </div>
-}
-else
-{
-    @foreach (var match in Model)
-    {
-        <div style="background: #FAFAF8;
-                    border-radius: 10px;
-                    padding: 20px;
-                    border: 0.5px solid #E0DDD6;
-                    margin-bottom: 12px;">
-            <div style="display: flex;
-                        justify-content: space-between;
-                        margin-bottom: 8px;">
-                <div style="flex: 1;">
-                    <h6 style="color: #1A1F36;
-                               font-weight: 600;
-                               margin-bottom: 6px;">
-                        @match.ProjectProposal.Title
-                    </h6>
-                    <span style="font-size: 12px;
-                                 padding: 3px 10px;
-                                 background: #FBF7F0;
-                                 color: #7A6535;
-                                 border-radius: 20px;">
-                        @match.ProjectProposal
-                            .ResearchArea.Name
-                    </span>
-                </div>
-                <span style="font-size: 12px;
-                             padding: 4px 14px;
-                             border-radius: 20px;
-                             font-weight: 500;
-                             background: @(match.Status
-                                 .ToString() == "Confirmed"
-                                 ? "#E8F5ED" : "#FBF7F0");
-                             color: @(match.Status
-                                 .ToString() == "Confirmed"
-                                 ? "#1B5E3F" : "#A68B4B");">
-                    @match.Status
-                </span>
-            </div>
-            <div style="font-size: 13px;
-                        color: #8A8578;">
-                Student:
-                <strong style="color: #2C2A26;">
-                    @match.ProjectProposal
-                        .SubmittedBy.FullName
-                </strong>
-                | Supervisor:
-                <strong style="color: #2C2A26;">
-                    @match.Supervisor.FullName
-                </strong>
-            </div>
-            <div style="font-size: 12px;
-                        color: #8A8578;
-                        margin-top: 8px;">
-                Interest expressed:
-                @match.ExpressedInterestAt
-                    .ToString("dd MMM yyyy, HH:mm")
-            </div>
+
+@foreach (var match in Model) {
+    <div style="background: #FAFAF8; border-radius: 10px; padding: 20px; border: 0.5px solid #E0DDD6; margin-bottom: 15px;">
+        <div style="display: flex; justify-content: space-between;">
+            <h5>@match.ProjectProposal.Title</h5>
+            <span class="badge" style="background: #FBF7F0; color: #A68B4B; padding: 5px 10px; border-radius: 15px;">@match.Status</span>
         </div>
-    }
+        <p style="font-size: 14px; color: #666;">Student: <b>@match.ProjectProposal.SubmittedBy.FullName</b> | Current Supervisor: <b>@match.Supervisor.FullName</b></p>
+        
+        <hr />
+        
+        <form asp-action="ReassignProject" method="post" style="display: flex; gap: 10px; align-items: center;">
+            <input type="hidden" name="matchId" value="@match.Id" />
+            <select name="newSupervisorId" asp-items="ViewBag.SupervisorList" class="form-select form-select-sm" style="max-width: 250px;">
+                <option value="">-- Select New Supervisor --</option>
+            </select>
+            <button type="submit" class="btn btn-sm btn-dark">Reassign</button>
+        </form>
+    </div>
 }
