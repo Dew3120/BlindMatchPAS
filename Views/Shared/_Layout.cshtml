@@ -118,56 +118,45 @@
 </head>
 <body>
 
-    <nav class="navbar-main">
-        <div class="container-fluid d-flex justify-content-between align-items-center">
-            <a href="/" class="brand-logo" style="text-decoration: none; display: flex; align-items: center; gap: 10px;">
-                <div class="brand-icon" style="width: 34px; height: 34px; background: linear-gradient(135deg, #C9A96E, #E8D5B5); border-radius: 8px; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;">
-                    <span style="color: #1A1F36; font-weight: bold; font-size: 17px;">B</span>
-                </div>
-                <span style="color: #C9A96E; font-size: 18px; font-weight: 600; letter-spacing: 0.5px;">Blind-Match PAS</span>
-            </a>
-
-            <div class="d-flex align-items-center gap-2">
-                @if (User.Identity != null && User.Identity.IsAuthenticated)
-                {
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <a asp-controller="Admin" asp-action="Index" class="nav-link-custom">Admin Panel</a>
-                        <a asp-controller="Admin" asp-action="ManageUsers" class="nav-link-custom">Manage Users</a>
-                    }
-                    @if (User.IsInRole("ModuleLeader"))
-                    {
-                        <a asp-controller="ModuleLeader" asp-action="Index" class="nav-link-custom">Dashboard</a>
-                        <a asp-controller="ModuleLeader" asp-action="AllMatches" class="nav-link-custom">All Matches</a>
-                    }
-                    @if (User.IsInRole("Supervisor"))
-                    {
-                        <a asp-controller="Supervisor" asp-action="Dashboard" class="nav-link-custom">Dashboard</a>
-                        <a asp-controller="Supervisor" asp-action="MyExpertise" class="nav-link-custom">My Expertise</a>
-                        <a asp-controller="Supervisor" asp-action="MyMatches" class="nav-link-custom">My Matches</a>
-                    }
-                    @if (User.IsInRole("Student"))
-                    {
-                        <a asp-controller="Student" asp-action="Dashboard" class="nav-link-custom">Dashboard</a>
-                        <a asp-controller="Student" asp-action="Create" class="nav-link-custom">New Proposal</a>
-                    }
-
-                    <div style="display: flex; align-items: center; gap: 8px; margin-left: 16px;">
-                        <div class="avatar-circle" style="width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, #2D3555, #1A1F36); border: 2px solid #C9A96E; display: flex; align-items: center; justify-content: center; color: #C9A96E; font-size: 13px; font-weight: 600;">
-                            @User.Identity.Name?.Substring(0, 1).ToUpper()
-                        </div>
-                        <form asp-controller="Account" asp-action="Logout" method="post" style="margin: 0;">
-                            <button type="submit" class="logout-btn">Logout</button>
-                        </form>
-                    </div>
-                }
-                else
-                {
-                    <a asp-controller="Account" asp-action="Login" class="login-link">Login</a>
-                }
-            </div>
+    <nav class="navbar custom-navbar navbar-expand-lg">
+    <div class="container mt-4">
+    <div class="row">
+        <div class="col-md-6 col-sm-12">
         </div>
-    </nav>
+    </div>
+</div>
+<div class="card p-3 shadow-sm">
+    <h5>Title</h5>
+    <p class="text-muted">Description</p>
+</div>
+
+    <a class="navbar-brand text-gold" href="/">BlindMatchPAS</a>
+
+    <ul class="navbar-nav me-auto">
+
+        @if (User.IsInRole("Student"))
+        {
+            <li><a class="nav-link" asp-controller="Student" asp-action="Dashboard">Student</a></li>
+        }
+
+        @if (User.IsInRole("Supervisor"))
+        {
+            <li><a class="nav-link" asp-controller="Supervisor" asp-action="Dashboard">Supervisor</a></li>
+        }
+
+        @if (User.IsInRole("ModuleLeader"))
+        {
+            <li><a class="nav-link" asp-controller="ModuleLeader" asp-action="Index">Module Leader</a></li>
+        }
+
+        @if (User.IsInRole("Admin"))
+        {
+            <li><a class="nav-link" asp-controller="Admin" asp-action="Index">Admin</a></li>
+        }
+
+    </ul>
+
+</nav>
 
     <main class="container mt-4 mb-5">
         @RenderBody()

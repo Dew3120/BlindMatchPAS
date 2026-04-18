@@ -1,3 +1,26 @@
+:root {
+
+    /* Background */
+    --bg-light: #F0F2F5;
+    --bg-warm: #FBF7F0;
+
+    /* Navbar / Primary */
+    --primary: #1A1F36;
+    --sidebar: #0F1225;
+    --footer: #080A18;
+
+    /* Gold */
+    --gold: #C9A96E;
+    --gold-btn: #A68B4B;
+    --gold-active: #7A6535;
+
+    /* Emerald */
+    --emerald: #2D8A5E;
+    --emerald-deep: #1B5E3F;
+
+    /* Text */
+    --text: #2C2A26;
+}
 html {
   font-size: 14px;
 }
@@ -19,7 +42,11 @@ html {
 
 body {
   margin-bottom: 60px;
+
+    background-color: var(--bg-light);
+    color: var(--text);
 }
+
 
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
   color: var(--bs-secondary-color);
