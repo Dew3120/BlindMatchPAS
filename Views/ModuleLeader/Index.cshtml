@@ -1,0 +1,49 @@
+@model IEnumerable<BlindMatchPAS.Models.Match>
+@{ ViewData["Title"] = "Module Leader Dashboard"; }
+
+@if (TempData["Success"] != null) {
+    <div class="alert alert-success" style="background: #E8F5ED; border: 1px solid #2D8A5E; color: #1B5E3F; padding: 15px; border-radius: 8px; margin-bottom: 20px;">@TempData["Success"]</div>
+}
+
+<div style="margin-bottom: 24px;">
+    <h4 style="color: #1A1F36; font-weight: 600;">Module Leader Dashboard</h4>
+    <p style="color: #8A8578; font-size: 14px;">Full system oversight</p>
+</div>
+
+<div style="display: flex; gap: 16px; margin-bottom: 24px; flex-wrap: wrap;">
+    <div style="flex: 1; background: #FBF7F0; padding: 20px; border-radius: 10px; border: 0.5px solid #E0DDD6;">
+        <span style="font-size: 28px; font-weight: 600; color: #C9A96E;">@ViewBag.TotalProposals</span>
+        <span style="font-size: 13px; color: #8A8578; display: block;">Total Proposals</span>
+    </div>
+    <div style="flex: 1; background: #FBF7F0; padding: 20px; border-radius: 10px; border: 0.5px solid #E0DDD6;">
+        <span style="font-size: 28px; font-weight: 600; color: #A68B4B;">@ViewBag.PendingProposals</span>
+        <span style="font-size: 13px; color: #8A8578; display: block;">Pending</span>
+    </div>
+    <div style="flex: 1; background: #E8F5ED; padding: 20px; border-radius: 10px; border: 0.5px solid #2D8A5E;">
+        <span style="font-size: 28px; font-weight: 600; color: #1B5E3F;">@ViewBag.MatchedProposals</span>
+        <span style="font-size: 13px; color: #8A8578; display: block;">Matched</span>
+    </div>
+    <div style="flex: 1; background: #E6F1FB; padding: 20px; border-radius: 10px; border: 0.5px solid #185FA5;">
+        <span style="font-size: 28px; font-weight: 600; color: #185FA5;">@ViewBag.TotalSupervisors</span>
+        <span style="font-size: 13px; color: #8A8578; display: block;">Supervisors</span>
+    </div>
+</div>
+
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+    <h5 style="font-weight: 600;">Recent Matches</h5>
+    <a asp-action="AllMatches" style="padding: 8px 16px; background: #1A1F36; color: #C9A96E; border-radius: 8px; text-decoration: none; font-size: 13px;">View All Matches</a>
+</div>
+
+@if (!Model.Any()) {
+    <div style="text-align: center; padding: 40px; background: #F4F3F0; border-radius: 10px;">No recent matches found.</div>
+} else {
+    @foreach (var match in Model) {
+        <div style="background: #FAFAF8; border-radius: 10px; padding: 15px; border: 0.5px solid #E0DDD6; margin-bottom: 10px;">
+            <div style="display: flex; justify-content: space-between;">
+                <h6>@match.ProjectProposal.Title</h6>
+                <span style="font-size: 11px; color: #1B5E3F; background: #E8F5ED; padding: 2px 8px; border-radius: 10px;">@match.Status</span>
+            </div>
+            <p style="font-size: 12px; color: #8A8578; margin: 0;">Student: @match.ProjectProposal.SubmittedBy.FullName | Supervisor: @match.Supervisor.FullName</p>
+        </div>
+    }
+}
