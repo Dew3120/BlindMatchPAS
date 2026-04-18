@@ -2,15 +2,28 @@
     ViewData["Title"] = "Admin Dashboard";
 }
 
-<h2>Admin Dashboard</h2>
-<div class="row mt-4">
-    <div class="col-md-4">
-        <div class="card shadow-sm">
-            <div class="card-body text-center">
-                <h5 class="card-title">User Management</h5>
-                <p class="card-text">Add, edit, or remove system users.</p>
-                <a asp-action="ManageUsers" class="btn btn-primary">Manage Users</a>
-            </div>
-        </div>
+<div style="margin-bottom: 24px;">
+    <h4 style="color: #1A1F36; font-weight: 600; margin-bottom: 4px;">Admin Dashboard</h4>
+    <p style="color: #8A8578; font-size: 14px; margin: 0;">System overview and user management</p>
+</div>
+
+<div style="display: flex; gap: 16px; margin-bottom: 24px; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; background: #FBF7F0; padding: 16px 20px; border-radius: 10px; border: 0.5px solid #E0DDD6;">
+        <span style="font-size: 28px; font-weight: 600; color: #C9A96E;">@ViewBag.TotalUsers</span>
+        <span style="font-size: 13px; color: #8A8578; display: block;">Total Users</span>
+    </div>
+    <div style="flex: 1; min-width: 140px; background: #FBF7F0; padding: 16px 20px; border-radius: 10px; border: 0.5px solid #E0DDD6;">
+        <span style="font-size: 28px; font-weight: 600; color: #A68B4B;">@ViewBag.TotalStudents</span>
+        <span style="font-size: 13px; color: #8A8578; display: block;">Students</span>
+    </div>
+    <div style="flex: 1; min-width: 140px; background: #E6F1FB; padding: 16px 20px; border-radius: 10px; border: 0.5px solid #185FA5;">
+        <span style="font-size: 28px; font-weight: 600; color: #185FA5;">@ViewBag.TotalSupervisors</span>
+        <span style="font-size: 13px; color: #8A8578; display: block;">Supervisors</span>
+    </div>
+    <div style="flex: 1; min-width: 140px; background: #E8F5ED; padding: 16px 20px; border-radius: 10px; border: 0.5px solid #2D8A5E;">
+        <span style="font-size: 28px; font-weight: 600; color: #1B5E3F;">@ViewBag.TotalLeaders</span>
+        <span style="font-size: 13px; color: #8A8578; display: block;">Module Leaders</span>
     </div>
 </div>
+
+<a asp-action="ManageUsers" style="padding: 10px 24px; background: #1A1F36; color: #C9A96E; border-radius: 8px; text-decoration: none; font-size: 14px; font-weight: 500;">Manage Users</a>

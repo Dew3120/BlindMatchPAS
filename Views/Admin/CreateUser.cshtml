@@ -1,47 +1,54 @@
 @model BlindMatchPAS.Models.ViewModels.CreateUserViewModel
+
 @{
     ViewData["Title"] = "Create User";
 }
 
-<h2>Create New System User</h2>
-
-<div class="row">
+<div class="row justify-content-center">
     <div class="col-md-6">
+        <div style="background: #F4F3F0; border-radius: 12px; padding: 24px; border: 0.5px solid #E0DDD6; margin-bottom: 24px;">
+            <h4 style="color: #1A1F36; font-weight: 600; margin-bottom: 4px;">Create New User</h4>
+            <p style="color: #8A8578; font-size: 14px; margin-bottom: 0;">Add a new account to the system</p>
+        </div>
+
         <form asp-action="CreateUser" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" style="color: #791F1F; font-size: 13px; margin-bottom: 12px;"></div>
 
-            <div class="form-group mb-3">
-                <label asp-for="FullName" class="control-label"></label>
-                <input asp-for="FullName" class="form-control" />
-                <span asp-validation-for="FullName" class="text-danger"></span>
+            <div style="margin-bottom: 16px;">
+                <label asp-for="FullName" style="font-size: 14px; font-weight: 500; color: #2C2A26; display: block; margin-bottom: 6px;"></label>
+                <input asp-for="FullName" style="width: 100%; padding: 10px 14px; border: 0.5px solid #E0DDD6; border-radius: 8px; font-size: 14px; background: #FAFAF8;" placeholder="e.g. John Smith" />
+                <span asp-validation-for="FullName" style="color: #791F1F; font-size: 12px;"></span>
             </div>
 
-            <div class="form-group mb-3">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
+            <div style="margin-bottom: 16px;">
+                <label asp-for="Email" style="font-size: 14px; font-weight: 500; color: #2C2A26; display: block; margin-bottom: 6px;"></label>
+                <input asp-for="Email" style="width: 100%; padding: 10px 14px; border: 0.5px solid #E0DDD6; border-radius: 8px; font-size: 14px; background: #FAFAF8;" placeholder="e.g. john@blindmatch.com" />
+                <span asp-validation-for="Email" style="color: #791F1F; font-size: 12px;"></span>
             </div>
 
-            <div class="form-group mb-3">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
+            <div style="margin-bottom: 16px;">
+                <label asp-for="Password" style="font-size: 14px; font-weight: 500; color: #2C2A26; display: block; margin-bottom: 6px;"></label>
+                <input asp-for="Password" style="width: 100%; padding: 10px 14px; border: 0.5px solid #E0DDD6; border-radius: 8px; font-size: 14px; background: #FAFAF8;" placeholder="Minimum 6 characters" />
+                <span asp-validation-for="Password" style="color: #791F1F; font-size: 12px;"></span>
             </div>
 
-            <div class="form-group mb-3">
-                <label asp-for="Role" class="control-label"></label>
-                <select asp-for="Role" class="form-control">
+            <div style="margin-bottom: 24px;">
+                <label asp-for="Role" style="font-size: 14px; font-weight: 500; color: #2C2A26; display: block; margin-bottom: 6px;"></label>
+                <select asp-for="Role" style="width: 100%; padding: 10px 14px; border: 0.5px solid #E0DDD6; border-radius: 8px; font-size: 14px; background: #FAFAF8;">
                     <option value="">-- Select a Role --</option>
                     <option value="Student">Student</option>
                     <option value="Supervisor">Supervisor</option>
                     <option value="ModuleLeader">Module Leader</option>
                     <option value="Admin">Admin</option>
                 </select>
-                <span asp-validation-for="Role" class="text-danger"></span>
+                <span asp-validation-for="Role" style="color: #791F1F; font-size: 12px;"></span>
             </div>
 
-            <button type="submit" class="btn btn-primary mt-2">Create User</button>
-            <a asp-action="ManageUsers" class="btn btn-secondary mt-2 ms-2">Cancel</a>
+            <div style="display: flex; gap: 8px;">
+                <button type="submit" style="padding: 10px 28px; background: #1A1F36; color: #C9A96E; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer;">Create User</button>
+                <a asp-action="ManageUsers" style="padding: 10px 28px; background: transparent; border: 0.5px solid #E0DDD6; border-radius: 8px; color: #8A8578; font-size: 14px; text-decoration: none;">Cancel</a>
+            </div>
         </form>
     </div>
 </div>

@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using BlindMatchPAS.Models;
 using BlindMatchPAS.Models.ViewModels;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlindMatchPAS.Controllers
@@ -18,33 +17,56 @@ namespace BlindMatchPAS.Controllers
             _userManager = userManager;
         }
 
-        // 1. Admin Dashboard
-        public IActionResult Index()
+        // Dashboard with stats
+        [HttpGet]
+        public async Task<IActionResult> Index()
         {
+            var users = await _userManager.Users.ToListAsync();
+            ViewBag.TotalUsers = users.Count;
+
+            var students = await _userManager.GetUsersInRoleAsync("Student");
+            ViewBag.TotalStudents = students.Count;
+
+            var supervisors = await _userManager.GetUsersInRoleAsync("Supervisor");
+            ViewBag.TotalSupervisors = supervisors.Count;
+
+            var leaders = await _userManager.GetUsersInRoleAsync("ModuleLeader");
+            ViewBag.TotalLeaders = leaders.Count;
+
             return View();
         }
 
-        // 2. View All Users
+        // View All Users
+        [HttpGet]
         public async Task<IActionResult> ManageUsers()
         {
             var users = await _userManager.Users.ToListAsync();
-            return View(users);
+            var userList = new List<(ApplicationUser User, string Role)>();
+
+            foreach (var user in users)
+            {
+                var roles = await _userManager.GetRolesAsync(user);
+                userList.Add((user, roles.FirstOrDefault() ?? "No Role"));
+            }
+
+            ViewBag.UserList = userList;
+            return View();
         }
 
-        // 3. GET: Create User Form
+        // GET: Create User
+        [HttpGet]
         public IActionResult CreateUser()
         {
             return View();
         }
 
-        // 4. POST: Process User Creation
+        // POST: Create User
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateUser(CreateUserViewModel model)
         {
             if (ModelState.IsValid)
             {
-                // Check for duplicate email explicitly
                 var existingUser = await _userManager.FindByEmailAsync(model.Email);
                 if (existingUser != null)
                 {
@@ -52,19 +74,20 @@ namespace BlindMatchPAS.Controllers
                     return View(model);
                 }
 
-                var user = new ApplicationUser 
-                { 
-                    UserName = model.Email, 
-                    Email = model.Email, 
-                    FullName = model.FullName 
+                var user = new ApplicationUser
+                {
+                    UserName = model.Email,
+                    Email = model.Email,
+                    FullName = model.FullName,
+                    EmailConfirmed = true
                 };
 
                 var result = await _userManager.CreateAsync(user, model.Password);
-
                 if (result.Succeeded)
                 {
                     await _userManager.AddToRoleAsync(user, model.Role);
-                    return RedirectToAction(nameof(ManageUsers));
+                    TempData["Success"] = $"User {model.FullName} created successfully.";
+                    return RedirectToAction("ManageUsers");
                 }
 
                 foreach (var error in result.Errors)
@@ -73,6 +96,31 @@ namespace BlindMatchPAS.Controllers
                 }
             }
             return View(model);
+        }
+
+        // POST: Delete User
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                TempData["Error"] = "User not found.";
+                return RedirectToAction("ManageUsers");
+            }
+
+            var result = await _userManager.DeleteAsync(user);
+            if (result.Succeeded)
+            {
+                TempData["Success"] = $"User {user.FullName} deleted successfully.";
+            }
+            else
+            {
+                TempData["Error"] = "Failed to delete user.";
+            }
+
+            return RedirectToAction("ManageUsers");
         }
     }
 }
