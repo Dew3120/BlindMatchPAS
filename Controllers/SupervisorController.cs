@@ -27,6 +27,48 @@ namespace BlindMatchPAS.Controllers
             _matchingService = matchingService;
         }
 
+        // 1. The Main Dashboard View
+        public async Task<IActionResult> Dashboard()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            
+            var proposals = await _matchingService.GetAnonymousProposalsForSupervisor(user!.Id);
+            
+            return View(proposals);
+        }
+
+        // 2. Browse Anonymous Proposals
+        public async Task<IActionResult> BrowseProposals()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            
+            var proposals = await _matchingService.GetAnonymousProposalsForSupervisor(user!.Id);
+            
+            return View(proposals);
+        }
+
+        // 3. Express Interest (POST Action)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ExpressInterest(int proposalId)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            
+            // Call the service to handle the business logic
+            var success = await _matchingService.ExpressInterest(user!.Id, proposalId);
+            
+            if (success)
+            {
+                TempData["SuccessMessage"] = "Interest expressed! Waiting for final confirmation.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Could not process request. You may have already expressed interest.";
+            }
+    
+            return RedirectToAction(nameof(BrowseProposals));
+        }
+
         // GET: Supervisor/MyExpertise
         [HttpGet]
         public async Task<IActionResult> MyExpertise()

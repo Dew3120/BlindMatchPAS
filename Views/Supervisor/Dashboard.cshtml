@@ -1,0 +1,27 @@
+@model IEnumerable<BlindMatchPAS.Models.ProjectProposal>
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div style="margin-bottom: 24px;">
+    <h3 style="color: #1A1F36; font-weight: 600; margin-bottom: 4px;">Supervisor Dashboard</h3>
+</div>
+
+<div style="background: #FAFAF8; border-radius: 12px; padding: 24px; border: 0.5px solid #E0DDD6; margin-bottom: 24px;">
+    <h4 style="color: #2D8A5E; font-weight: 600; margin-bottom: 8px;">Welcome to the Blind-Match System</h4>
+    <p style="color: #8A8578; font-size: 14px; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 0.5px solid #E0DDD6;">You are successfully logged into your secure portal.</p>
+
+    <div style="display: flex; justify-content: space-between; align-items: center; background: #F4F3F0; padding: 16px 24px; border-radius: 8px;">
+        <div style="display: flex; align-items: center; gap: 16px;">
+            <div style="background: #2D8A5E; color: white; border-radius: 6px; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 18px;">
+                @(Model?.Count() ?? 0)
+            </div>
+            <span style="color: #1A1F36; font-weight: 600; font-size: 15px;">Proposals available in your expertise area</span>
+        </div>
+        
+        <a asp-action="BrowseProposals" style="padding: 10px 24px; background: #1A1F36; color: #C9A96E; border-radius: 8px; text-decoration: none; font-size: 14px; font-weight: 600;">
+            Browse Anonymous Proposals
+        </a>
+    </div>
+</div>
