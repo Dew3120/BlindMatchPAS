@@ -1,0 +1,63 @@
+@model IEnumerable<BlindMatchPAS.Models.ResearchArea>
+@{
+    ViewData["Title"] = "Research Areas";
+}
+
+@if (TempData["Success"] != null)
+{
+    <div style="background: #E8F5ED; border: 1px solid #2D8A5E; color: #1B5E3F; padding: 12px; border-radius: 8px; margin-bottom: 16px;">
+        @TempData["Success"]
+    </div>
+}
+
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+    <div>
+        <h4 style="color: #1A1F36; font-weight: 600; margin-bottom: 4px;">Research Areas</h4>
+        <p style="color: #8A8578; font-size: 14px; margin: 0;">Manage research area tags for proposals and expertise matching</p>
+    </div>
+    <a asp-action="Create" style="padding: 8px 20px; background: #1A1F36; color: #C9A96E; border-radius: 8px; text-decoration: none; font-size: 14px; font-weight: 500;">+ New Area</a>
+</div>
+
+@if (!Model.Any())
+{
+    <div style="text-align: center; padding: 60px; background: #F4F3F0; border-radius: 12px; border: 0.5px solid #E0DDD6;">
+        <p style="color: #8A8578; font-size: 16px;">No research areas created yet.</p>
+        <a asp-action="Create" style="padding: 8px 20px; background: #1A1F36; color: #C9A96E; border-radius: 8px; text-decoration: none; font-size: 14px;">Create Your First Area</a>
+    </div>
+}
+else
+{
+    @foreach (var area in Model)
+    {
+        <div style="background: #FAFAF8; border-radius: 10px; padding: 20px; border: 0.5px solid #E0DDD6; margin-bottom: 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h6 style="color: #1A1F36; font-weight: 600; margin-bottom: 4px;">@area.Name</h6>
+                    <span style="font-size: 13px; color: #8A8578;">@(area.Description ?? "No description")</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 12px; padding: 4px 14px; border-radius: 20px; font-weight: 500;
+                        background: @(area.IsActive ? "#E8F5ED" : "#F5E0E0");
+                        color: @(area.IsActive ? "#1B5E3F" : "#791F1F");">
+                        @(area.IsActive ? "Active" : "Inactive")
+                    </span>
+                    <a asp-action="Edit" asp-route-id="@area.Id" style="padding: 6px 14px; background: transparent; border: 0.5px solid #C9A96E; border-radius: 6px; color: #A68B4B; font-size: 13px; text-decoration: none;">Edit</a>
+                    @if (area.IsActive)
+                    {
+                        <form asp-action="Deactivate" asp-route-id="@area.Id" method="post" style="margin: 0;">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" onclick="return confirm('Deactivate this research area?')" style="padding: 6px 14px; background: transparent; border: 0.5px solid #C75050; border-radius: 6px; color: #791F1F; font-size: 13px; cursor: pointer;">Deactivate</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <form asp-action="Activate" asp-route-id="@area.Id" method="post" style="margin: 0;">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" style="padding: 6px 14px; background: transparent; border: 0.5px solid #2D8A5E; border-radius: 6px; color: #1B5E3F; font-size: 13px; cursor: pointer;">Activate</button>
+                        </form>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+}
