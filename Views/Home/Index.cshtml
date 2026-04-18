@@ -1,8 +1,38 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+@{
+    ViewData["Title"] = "Welcome";
+    Layout = "_Layout";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+@if (User.Identity!.IsAuthenticated)
+{
+    <div style="text-align: center; padding: 60px 20px;">
+        <h3 style="color: #1A1F36; font-weight: 600; margin-bottom: 8px;">Welcome back, @User.Identity.Name</h3>
+        <p style="color: #8A8578; font-size: 16px; margin-bottom: 24px;">Select your dashboard from the navigation bar above.</p>
+    </div>
+}
+else
+{
+    <div style="text-align: center; padding: 80px 20px;">
+        <h2 style="color: #1A1F36; font-weight: 700; margin-bottom: 8px;">BlindMatch PAS</h2>
+        <p style="color: #C9A96E; font-size: 18px; font-weight: 500; margin-bottom: 4px;">Project Approval System</p>
+        <p style="color: #8A8578; font-size: 15px; max-width: 520px; margin: 0 auto 32px;">
+            A blind-matching platform where students submit project proposals and supervisors express interest — identities remain hidden until a match is confirmed.
+        </p>
+        <a asp-controller="Account" asp-action="Login" style="padding: 12px 36px; background: #1A1F36; color: #C9A96E; border-radius: 8px; text-decoration: none; font-size: 15px; font-weight: 600;">Sign In</a>
+    </div>
+
+    <div style="display: flex; gap: 16px; max-width: 800px; margin: 0 auto; flex-wrap: wrap; padding: 0 20px;">
+        <div style="flex: 1; min-width: 220px; background: #F4F3F0; border-radius: 12px; padding: 24px; border: 0.5px solid #E0DDD6;">
+            <h6 style="color: #1A1F36; font-weight: 600; margin-bottom: 8px;">For Students</h6>
+            <p style="color: #8A8578; font-size: 13px; margin: 0;">Submit your project proposals anonymously. Your identity stays hidden until a supervisor confirms interest.</p>
+        </div>
+        <div style="flex: 1; min-width: 220px; background: #F4F3F0; border-radius: 12px; padding: 24px; border: 0.5px solid #E0DDD6;">
+            <h6 style="color: #1A1F36; font-weight: 600; margin-bottom: 8px;">For Supervisors</h6>
+            <p style="color: #8A8578; font-size: 13px; margin: 0;">Browse proposals based on research areas. Express interest without knowing who submitted it.</p>
+        </div>
+        <div style="flex: 1; min-width: 220px; background: #F4F3F0; border-radius: 12px; padding: 24px; border: 0.5px solid #E0DDD6;">
+            <h6 style="color: #1A1F36; font-weight: 600; margin-bottom: 8px;">Blind Matching</h6>
+            <p style="color: #8A8578; font-size: 13px; margin: 0;">Identities are revealed only after both parties confirm the match — ensuring fair, unbiased selection.</p>
+        </div>
+    </div>
+}
